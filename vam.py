@@ -32,9 +32,14 @@ def vam():
 
 @vam.command()
 @click.argument('package')
-def install(package: str):
+@click.option('--upgrade/--no-upgrade', default=False)
+def install(package: str, upgrade: bool):
     """Install a package"""
     click.echo('Installing {}'.format(package))
+
+    if package_dir(package).exists() and not upgrade:
+        click.echo('Application {} already installed, to upgrade use --upgrade'.format(package))
+        exit(1)
 
     # Create venv
     venv_dir = package_dir(package)
