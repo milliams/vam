@@ -76,15 +76,22 @@ def remove(package):
     shutil.rmtree(str(d))
 
 
+@vam.command()
+@click.argument('package')
+def info(package):
+    """Display information about a package"""
+
+    dist = get_distribution(package)
+    click.echo('{}=={}'.format(package, dist.version))
+    for entry_point_group, entry_point in get_entry_points(package):
+        click.echo('  {}'.format(entry_point_group))
+        click.echo('    {}'.format(entry_point.name))
+
+
 @vam.command('list')
-@click.option('-v', '--verbose', count=True)
-def _list(verbose):
+def _list():
     """List all installed packages"""
     for p in packages():
         package = p.name
         dist = get_distribution(package)
         click.echo('{}=={}'.format(package, dist.version))
-        if verbose:
-            for entry_point_group, entry_point in get_entry_points(package):
-                click.echo('  {}'.format(entry_point_group))
-                click.echo('    {}'.format(entry_point.name))
