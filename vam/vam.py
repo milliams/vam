@@ -16,7 +16,7 @@ def pip_command(package: str) -> pathlib.Path:
 
 def call_pip(package: str, args):
     pip = pip_command(package)
-    return subprocess.check_call([str(pip)] + args, stdout=subprocess.PIPE)
+    return subprocess.check_output([str(pip)] + args)
 
 
 config = {
@@ -46,7 +46,12 @@ def install(package: str, upgrade: bool):
     venv.create(str(venv_dir), clear=True, with_pip=True)
 
     # Ask pip to install the package
-    call_pip(package, ['install', package])
+    try:
+        call_pip(package, ['install', package])
+    except subprocess.CalledProcessError as err:
+        click.echo(err.output)
+        # TODO remove package so far if it fails here
+        exit(1)
 
     # Install entry-point launchers
     for entry_point_group, entry_point in get_entry_points(package):
