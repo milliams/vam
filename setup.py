@@ -5,7 +5,6 @@ from vam import __version__
 setup(
     name='vam',
     version=__version__,
-    packages=[''],
     url='https://github.com/milliams/vam',
     license='MIT',
     author='Matt Williams',
