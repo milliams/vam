@@ -5,12 +5,9 @@ import venv
 
 import click
 
-from environment import home, packages
-from launcher import create_launcher_text, install_launcher
-from package import package_dir, get_entry_points, get_distribution
-
-
-__version__ = '0.1'
+from .environment import home, packages
+from .launcher import create_launcher_text, install_launcher
+from .package import package_dir, get_entry_points, get_distribution
 
 
 def pip_command(package: str) -> pathlib.Path:

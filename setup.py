@@ -12,7 +12,7 @@ setup(
     description='Virtualenv Application Manager',
     entry_points={
         'console_scripts': [
-            'vam=vam:vam',
+            'vam=vam.vam:vam',
         ],
     },
     install_requires=[
