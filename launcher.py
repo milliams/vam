@@ -2,7 +2,7 @@ import stat
 import string
 
 template = """#!${python_path}
-# VAM-LAUNCHER-SCRIPT: '${package}==${version}','console_scripts','${entry_point}'
+# VAM-LAUNCHER-SCRIPT: '${package}==${version}','${entry_point_group}','${entry_point}'
 __requires__ = '${package}==${version}'
 import sys
 from pkg_resources import load_entry_point
