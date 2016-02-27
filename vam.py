@@ -72,8 +72,7 @@ def vam():
 
 @vam.command()
 @click.argument('package')
-@click.option('--bindir', default=config['bindir'], type=pathlib.Path)
-def install(package: str, bindir: pathlib.Path):
+def install(package: str):
     """Install a package"""
     click.echo('Installing {}'.format(package))
 
@@ -95,7 +94,7 @@ def install(package: str, bindir: pathlib.Path):
             python_path=str(python_path)
         )
 
-        launcher_path = bindir / entry_point.name
+        launcher_path = config['bindir'] / entry_point.name
         install_launcher(launcher_path, launcher)
 
 
@@ -103,6 +102,11 @@ def install(package: str, bindir: pathlib.Path):
 @click.argument('package')
 def remove(package):
     """Remove a package"""
+
+    for entry_point_group, entry_point in get_entry_points(package):
+        launcher_path = config['bindir'] / entry_point.name
+        launcher_path.unlink()
+
     d = package_dir(package)
     shutil.rmtree(str(d))
 
