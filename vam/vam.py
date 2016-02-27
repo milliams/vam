@@ -72,8 +72,8 @@ def remove(package):
         launcher_path = config['bindir'] / entry_point.name
         launcher_path.unlink()
 
-    d = package_dir(package)
-    shutil.rmtree(str(d))
+    installed_dir = package_dir(package)
+    shutil.rmtree(str(installed_dir))
 
 
 @vam.command()
@@ -91,7 +91,7 @@ def info(package):
 @vam.command('list')
 def _list():
     """List all installed packages"""
-    for p in packages():
-        package = p.name
+    for package_dir in packages():
+        package = package_dir.name
         dist = get_distribution(package)
         click.echo('{}=={}'.format(package, dist.version))
