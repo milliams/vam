@@ -2,7 +2,7 @@ import pathlib
 
 import pkg_resources
 
-from environment import vam_dir
+from .environment import vam_dir
 
 
 def package_dir(package: str) -> pathlib.Path:
