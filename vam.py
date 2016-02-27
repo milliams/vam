@@ -40,7 +40,10 @@ def get_distribution(package: str) -> pkg_resources.Distribution:
 
 def get_entry_points(package: str):
     dist = get_distribution(package)
-    return pkg_resources.get_entry_map(dist)
+    entry_map = pkg_resources.get_entry_map(dist)
+    for entry_point_group, entry_points in entry_map.items():
+        for entry_point in entry_points.values():
+            yield entry_point_group, entry_point
 
 
 def packages():
@@ -82,20 +85,18 @@ def install(package: str, bindir: pathlib.Path):
     call_pip(package, ['install', package])
 
     # Install entry-point launchers
-    for entry_point_group, entry_points in get_entry_points(package).items():
-        for entry_point in entry_points.values():
+    for entry_point_group, entry_point in get_entry_points(package):
+        python_path = package_dir(package) / 'bin' / 'python'  # TODO ask setuptools for this info?
+        launcher = create_launcher_text(
+            package=package,
+            version=entry_point.dist.version,
+            entry_point=entry_point.name,
+            entry_point_group=entry_point_group,
+            python_path=str(python_path)
+        )
 
-            python_path = package_dir(package) / 'bin' / 'python'  # TODO ask setuptools for this info?
-            launcher = create_launcher_text(
-                package=package,
-                version=entry_point.dist.version,
-                entry_point=entry_point.name,
-                entry_point_group=entry_point_group,
-                python_path=str(python_path)
-            )
-
-            launcher_path = bindir / entry_point.name
-            install_launcher(launcher_path, launcher)
+        launcher_path = bindir / entry_point.name
+        install_launcher(launcher_path, launcher)
 
 
 @vam.command()
@@ -115,7 +116,6 @@ def _list(verbose):
         dist = get_distribution(package)
         click.echo('{}=={}'.format(package, dist.version))
         if verbose:
-            for entry_point_group, entry_points in get_entry_points(package).items():
+            for entry_point_group, entry_point in get_entry_points(package):
                 click.echo('  {}'.format(entry_point_group))
-                for entry_point in entry_points.values():
-                    click.echo('    {}'.format(entry_point.name))
+                click.echo('    {}'.format(entry_point.name))
