@@ -1,0 +1,10 @@
+deploy:
+  provider: pypi
+  user: milliams
+  password:
+    secure: 0X/3RmA9JLx6pBflmL8MI3G/dUXec1bfxE5BEcFZR5QEzdCOPvwAj0lE8rMcciC8JieYiuWXc7RI+AyE32hXx5iW249ZCY8mf8+XYGtjNDEz5xXfAuykLPXNqUrSsvahHOBFY83IH+O4ktVzqaoUkqRKsThIdHLdbkxvg4I4KsA3QkGIBLkQUXQF9f86NqGXqcot8+tGkyLPJ0bg3UhQF/q7KIpLxBMbk2alFUeP/2pJJ86BfHu/2URUdXBjKb6sfYdYXxW7ozx4EuZeQ0YD4xWKaC1WgCBrtFZ59hdwFI8rkMOk7xG7T9JGXj18Xgbsz9IMZomf0aovI3EbmTA+kfAEsVnUtw+Hnb3oH9OZjljmhHkx64wOqB3ArYJU3oXiRGhaHHp8ih1aNUuj56UuZpCqiq1UaqQ+5Q/QnlCYY3xft3vMG5uEhxxbspHelBkMjj2UeM3X7zMWPIoPhY5TUOM8a/8AlR0tzARdq2jNd0OFFNEiP0GYkJy4Hodb4j3cRFjXZ/w4usK1/6slCouNJXywRizeWU5ZVwpBkGQizbyChQk+tbKjCR+5cREJBKFRkI9oxpZ3GPI4Iy5i3OsUcJl20rZqqdbY0u9KfMFO+5uvMyoj6E0G/bByLALjtJuMHGxOqQyVrrrEL08SQJBA7U4hPv89ifdf6m/clisnM0E=
+  on:
+    tags: true
+    distributions: sdist bdist_wheel
+    repo: milliams/vam
+    branch: master
