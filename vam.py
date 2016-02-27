@@ -1,5 +1,6 @@
 import os
 import pathlib
+import shutil
 import subprocess
 import venv
 
@@ -22,12 +23,17 @@ def package_dir(package: str) -> pathlib.Path:
 
 
 def get_distribution(package: str) -> pkg_resources.Distribution:
-    site_packages = package_dir(package) / 'lib' / 'python3.4' / 'site-packages'  # TODO fix '3.4'-specific
-    dists = [d for d in pkg_resources.find_distributions(str(site_packages))]
-    package_dists = [d for d in dists if d.project_name == package]
+    lib = package_dir(package) / 'lib'
+    package_dists = []
+    for py_version in lib.iterdir():  # Iterate over 'python3.4' etc.
+        if not py_version.is_dir():
+            continue
+        site_packages = py_version / 'site-packages'
+        dists = [d for d in pkg_resources.find_distributions(str(site_packages))]
+        package_dists += [d for d in dists if d.project_name == package]
 
     if not package_dists:
-        raise Exception('Package not found in {}'.format(site_packages))
+        raise Exception('Distribution not found in {}'.format(lib))
 
     return package_dists[0]
 
@@ -93,9 +99,11 @@ def install(package: str, bindir: pathlib.Path):
 
 
 @vam.command()
-def remove():
+@click.argument('package')
+def remove(package):
     """Remove a package"""
-    pass
+    d = package_dir(package)
+    shutil.rmtree(str(d))
 
 
 @vam.command('list')
