@@ -14,5 +14,7 @@ setup(
             'vam=vam:vam',
         ],
     },
-    install_requires=['click'],
+    install_requires=[
+        'click'
+    ],
 )
