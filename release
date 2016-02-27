@@ -5,8 +5,9 @@ IFS=$'\n\t'
 #Merge non-interactively
 export GIT_MERGE_AUTOEDIT=no
 
+git pull --rebase --all
 git flow release start $1
 sed --in-place "s/^__version__ = .*/__version__ = '$1'/g" vam/__init__.py
 git add vam/__init__.py
 git commit -m "Update version number"
-git flow release finish -Fpm "Release version $1" $1
+git flow release finish -pm "Release version $1" $1
