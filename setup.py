@@ -1,8 +1,10 @@
 from distutils.core import setup
 
+from vam import __version__
+
 setup(
     name='vam',
-    version='0.1',
+    version=__version__,
     packages=[''],
     url='https://github.com/milliams/vam',
     license='MIT',
